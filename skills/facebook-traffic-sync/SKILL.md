@@ -7,7 +7,7 @@ license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [social-data, facebook, traffic, cron]
+    tags: [social-data, facebook, traffic]
     category: productivity
 ---
 

@@ -90,16 +90,17 @@ def test_public_files_contain_no_private_credentials_or_paths():
             assert forbidden not in text, f"{path} contains forbidden text {forbidden!r}"
 
 
-def test_readme_documents_install_update_and_default_jobs():
+def test_readme_documents_install_and_update():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for name in EXPECTED:
         assert f"designveloper/social-data-skills/skills/{name}" in readme
         assert f"hermes skills update {name}" in readme
-    for job_name in (
-        "Update Google Trends",
-        "Update Tech News",
-        "Update Competitor Content",
-        "Update Facebook Traffic",
-        "Update X Traffic",
-    ):
-        assert job_name in readme
+
+
+def test_public_files_have_no_cron_commands_or_tags():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "hermes cron" not in readme
+
+    for name in EXPECTED:
+        frontmatter, _ = parse_skill(SKILLS / name / "SKILL.md")
+        assert "cron" not in frontmatter["metadata"]["hermes"]["tags"]

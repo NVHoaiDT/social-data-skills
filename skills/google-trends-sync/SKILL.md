@@ -7,7 +7,7 @@ license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [social-data, google-trends, cron]
+    tags: [social-data, google-trends]
     category: productivity
 ---
 

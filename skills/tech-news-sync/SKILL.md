@@ -7,7 +7,7 @@ license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [social-data, rss, news, cron]
+    tags: [social-data, rss, news]
     category: productivity
 ---
 

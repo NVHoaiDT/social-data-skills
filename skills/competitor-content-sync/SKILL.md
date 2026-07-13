@@ -7,7 +7,7 @@ license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [social-data, competitors, linkedin, cron]
+    tags: [social-data, competitors, linkedin]
     category: productivity
 ---
 
