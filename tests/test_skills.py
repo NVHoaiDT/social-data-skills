@@ -34,8 +34,8 @@ EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
     "tech-news-sync": "1.0.0",
     "competitor-content-sync": "1.0.0",
-    "facebook-traffic-sync": "1.1.0",
-    "x-traffic-sync": "1.1.0",
+    "facebook-traffic-sync": "1.1.1",
+    "x-traffic-sync": "1.1.1",
 }
 FORBIDDEN = [
     "MCP_JWT_SECRET",
