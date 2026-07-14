@@ -1,7 +1,7 @@
 ---
 name: facebook-traffic-sync
 description: Sync and analyze Facebook traffic in the social dashboard.
-version: 1.1.0
+version: 1.1.1
 author: Designveloper
 license: MIT
 platforms: [linux, macos]
@@ -26,10 +26,10 @@ Before fetching, require a clear analysis date range. If the user did not provid
 5. Use `Other` when `message` is null or empty. Do not invent `postType` or `impressions`; pass through the returned nullable values.
 6. Call `mcp_social_dashboard_update_dsv_facebook_posts` with the same `fetchedAt`, all normalized fields, and `category`.
 7. Filter the freshly fetched items to the user-confirmed inclusive date range. If none match, report that the refresh succeeded but do not create analysis blocks.
-8. Call `mcp_social_dashboard_list_visualization_block_types` with `{}`.
+8. Call `mcp_social_dashboard_list_visualization_block_types` with `{}`. Keep each chosen contract's `jsonSchema` and `example` at hand; they are the only source of truth for that block's `payload` shape.
 9. Analyze the filtered posts using the Standard Questions below. Perform all calculations yourself from the returned post rows.
 10. Choose one or more advertised visualization contracts. Use `others` only when none of the specialized contracts fits.
-11. Create one unique `runId`, one ISO-8601 `generatedAt`, and ordered block payloads. Every block uses the originating user request as `question`, platform `Facebook`, the confirmed date range, the selected type/version, and a unique `sortOrder` starting at `0`.
+11. Create one unique `runId`, one ISO-8601 `generatedAt`, and ordered block payloads. Every block uses the originating user request as `question`, platform `Facebook`, the confirmed date range, the selected type/version, and a unique `sortOrder` starting at `0`. Build each block's `payload` using exactly the field names and structure in that contract's `jsonSchema`/`example` (for example, `scorecard` requires a non-empty `items` array). Never omit a required field and never add a field the contract does not define; re-check every payload against its contract before the next step.
 12. Call `mcp_social_dashboard_create_visualization_blocks` once with the complete run.
 13. Report the post upsert count, generated block count, and provider warnings.
 
