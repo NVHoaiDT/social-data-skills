@@ -30,6 +30,13 @@ EXPECTED = {
         "mcp_social_dashboard_update_dsv_x_posts",
     ),
 }
+EXPECTED_VERSIONS = {
+    "google-trends-sync": "1.0.0",
+    "tech-news-sync": "1.0.0",
+    "competitor-content-sync": "1.0.0",
+    "facebook-traffic-sync": "1.1.0",
+    "x-traffic-sync": "1.1.0",
+}
 FORBIDDEN = [
     "MCP_JWT_SECRET",
     "__PROXY_ENV__",
@@ -62,7 +69,7 @@ def test_exact_skill_set_and_frontmatter():
         frontmatter, _ = parse_skill(path)
         names.append(frontmatter["name"])
         assert frontmatter["name"] == path.parent.name
-        assert frontmatter["version"] == "1.0.0"
+        assert frontmatter["version"] == EXPECTED_VERSIONS[path.parent.name]
         assert len(frontmatter["description"]) <= 60
         assert frontmatter["description"].endswith(".")
         assert "required_environment_variables" not in frontmatter
