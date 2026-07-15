@@ -25,6 +25,10 @@ EXPECTED = {
         "mcp_secure_proxy_social_fetch_facebook_posts",
         "mcp_social_dashboard_update_dsv_facebook_posts",
     ),
+    "facebook-post-report-sync": (
+        "mcp_secure_proxy_social_fetch_facebook_posts",
+        "google_api.py sheets update",
+    ),
     "x-traffic-sync": (
         "mcp_secure_proxy_social_fetch_x_posts",
         "mcp_social_dashboard_update_dsv_x_posts",
@@ -38,9 +42,16 @@ EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
     "tech-news-sync": "1.0.0",
     "competitor-content-sync": "1.0.0",
-    "facebook-traffic-sync": "2.0.0",
+    "facebook-traffic-sync": "2.1.0",
+    "facebook-post-report-sync": "1.0.0",
     "x-traffic-sync": "2.0.0",
     "traffic-analysis": "1.0.0",
+}
+
+# This skill's exact-link deduplication and placeholder matching are
+# correctness-critical, so it carries one credential-free deterministic script.
+EXTRA_FILES = {
+    "facebook-post-report-sync": ["scripts/plan_sheet_updates.py"],
 }
 FORBIDDEN = [
     "MCP_JWT_SECRET",
@@ -68,7 +79,10 @@ def test_exact_skill_set_and_frontmatter():
         for path in SKILLS.rglob("*")
         if path.is_file()
     }
-    assert skill_files == {f"{name}/SKILL.md" for name in EXPECTED}
+    expected_files = {f"{name}/SKILL.md" for name in EXPECTED}
+    for name, extras in EXTRA_FILES.items():
+        expected_files.update(f"{name}/{extra}" for extra in extras)
+    assert skill_files == expected_files
     names = []
     for path in files:
         frontmatter, _ = parse_skill(path)
