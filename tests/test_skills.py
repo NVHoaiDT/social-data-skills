@@ -71,14 +71,34 @@ def parse_skill(path: Path):
     return yaml.safe_load(match.group(1)), text
 
 
+def collect_skill_files(skills: Path) -> set[str]:
+    return {
+        path.relative_to(skills).as_posix()
+        for path in skills.rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts
+    }
+
+
+def test_skill_file_listing_ignores_python_bytecode(tmp_path):
+    skills = tmp_path / "skills"
+    skill = skills / "example-skill"
+    (skill / "scripts" / "__pycache__").mkdir(parents=True)
+    (skill / "SKILL.md").write_text("skill", encoding="utf-8")
+    (skill / "scripts" / "tool.py").write_text("pass\n", encoding="utf-8")
+    (skill / "scripts" / "__pycache__" / "tool.cpython-312.pyc").write_bytes(
+        b"bytecode"
+    )
+
+    assert collect_skill_files(skills) == {
+        "example-skill/SKILL.md",
+        "example-skill/scripts/tool.py",
+    }
+
+
 def test_exact_skill_set_and_frontmatter():
     files = sorted(SKILLS.glob("*/SKILL.md"))
     assert {path.parent.name for path in files} == set(EXPECTED)
-    skill_files = {
-        path.relative_to(SKILLS).as_posix()
-        for path in SKILLS.rglob("*")
-        if path.is_file()
-    }
+    skill_files = collect_skill_files(SKILLS)
     expected_files = {f"{name}/SKILL.md" for name in EXPECTED}
     for name, extras in EXTRA_FILES.items():
         expected_files.update(f"{name}/{extra}" for extra in extras)
