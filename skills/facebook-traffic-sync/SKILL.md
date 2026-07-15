@@ -1,7 +1,7 @@
 ---
 name: facebook-traffic-sync
 description: Sync Facebook traffic into the social dashboard.
-version: 2.0.0
+version: 2.1.0
 author: Designveloper
 license: MIT
 platforms: [linux, macos]
@@ -21,8 +21,8 @@ Use this skill to refresh Designveloper Facebook Page posts and engagement metri
 2. Require `fetchedAt`, `items`, and `warnings`. Stop on a tool error.
 3. If `items` is empty, preserve existing rows and report the no-data result.
 4. Assign exactly one category to each post: `Career Advice`, `Tech news`, `DSV's member sharing`, `DSV's services`, `DSV's news`, `Blog Post Sharing`, `Promotion`, `Knowledge sharing`, `Case study`, `Meme`, or `Other`.
-5. Use `Other` when `message` is null or empty. Do not invent `postType` or `impressions`; pass through the returned nullable values.
-6. Call `mcp_social_dashboard_update_dsv_facebook_posts` with the same `fetchedAt`, all normalized fields, and `category`.
+5. Use `Other` when `message` is null or empty. Pass `postType`, `impressions`, `reach`, `totalClicks`, and `linkClicks` through exactly as returned. They are real Facebook Insights data, but an individual field may be `null` when that post's Insights lookup failed. Never invent a replacement value.
+6. Call `mcp_social_dashboard_update_dsv_facebook_posts` with the same `fetchedAt`, all normalized fields (including `reach`, `totalClicks`, and `linkClicks`), and `category`.
 7. Report the upsert count and provider warnings.
 
 ## Failure

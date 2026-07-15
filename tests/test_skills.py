@@ -25,6 +25,10 @@ EXPECTED = {
         "mcp_secure_proxy_social_fetch_facebook_posts",
         "mcp_social_dashboard_update_dsv_facebook_posts",
     ),
+    "facebook-post-report-sync": (
+        "mcp_secure_proxy_social_fetch_facebook_posts",
+        "google_api.py sheets update",
+    ),
     "x-traffic-sync": (
         "mcp_secure_proxy_social_fetch_x_posts",
         "mcp_social_dashboard_update_dsv_x_posts",
@@ -38,9 +42,16 @@ EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
     "tech-news-sync": "1.0.0",
     "competitor-content-sync": "1.0.0",
-    "facebook-traffic-sync": "2.0.0",
+    "facebook-traffic-sync": "2.1.0",
+    "facebook-post-report-sync": "1.0.0",
     "x-traffic-sync": "2.0.0",
     "traffic-analysis": "1.0.0",
+}
+
+# This skill's exact-link deduplication and placeholder matching are
+# correctness-critical, so it carries one credential-free deterministic script.
+EXTRA_FILES = {
+    "facebook-post-report-sync": ["scripts/plan_sheet_updates.py"],
 }
 FORBIDDEN = [
     "MCP_JWT_SECRET",
@@ -60,15 +71,38 @@ def parse_skill(path: Path):
     return yaml.safe_load(match.group(1)), text
 
 
+def collect_skill_files(skills: Path) -> set[str]:
+    return {
+        path.relative_to(skills).as_posix()
+        for path in skills.rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts
+    }
+
+
+def test_skill_file_listing_ignores_python_bytecode(tmp_path):
+    skills = tmp_path / "skills"
+    skill = skills / "example-skill"
+    (skill / "scripts" / "__pycache__").mkdir(parents=True)
+    (skill / "SKILL.md").write_text("skill", encoding="utf-8")
+    (skill / "scripts" / "tool.py").write_text("pass\n", encoding="utf-8")
+    (skill / "scripts" / "__pycache__" / "tool.cpython-312.pyc").write_bytes(
+        b"bytecode"
+    )
+
+    assert collect_skill_files(skills) == {
+        "example-skill/SKILL.md",
+        "example-skill/scripts/tool.py",
+    }
+
+
 def test_exact_skill_set_and_frontmatter():
     files = sorted(SKILLS.glob("*/SKILL.md"))
     assert {path.parent.name for path in files} == set(EXPECTED)
-    skill_files = {
-        path.relative_to(SKILLS).as_posix()
-        for path in SKILLS.rglob("*")
-        if path.is_file()
-    }
-    assert skill_files == {f"{name}/SKILL.md" for name in EXPECTED}
+    skill_files = collect_skill_files(SKILLS)
+    expected_files = {f"{name}/SKILL.md" for name in EXPECTED}
+    for name, extras in EXTRA_FILES.items():
+        expected_files.update(f"{name}/{extra}" for extra in extras)
+    assert skill_files == expected_files
     names = []
     for path in files:
         frontmatter, _ = parse_skill(path)

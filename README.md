@@ -10,6 +10,7 @@ hermes skills install designveloper/social-data-skills/skills/google-trends-sync
 hermes skills install designveloper/social-data-skills/skills/tech-news-sync --yes
 hermes skills install designveloper/social-data-skills/skills/competitor-content-sync --yes
 hermes skills install designveloper/social-data-skills/skills/facebook-traffic-sync --yes
+hermes skills install designveloper/social-data-skills/skills/facebook-post-report-sync --yes
 hermes skills install designveloper/social-data-skills/skills/x-traffic-sync --yes
 hermes skills install designveloper/social-data-skills/skills/traffic-analysis --yes
 ```
@@ -21,6 +22,7 @@ hermes skills update google-trends-sync
 hermes skills update tech-news-sync
 hermes skills update competitor-content-sync
 hermes skills update facebook-traffic-sync
+hermes skills update facebook-post-report-sync
 hermes skills update x-traffic-sync
 hermes skills update traffic-analysis
 ```
