@@ -29,13 +29,18 @@ EXPECTED = {
         "mcp_secure_proxy_social_fetch_x_posts",
         "mcp_social_dashboard_update_dsv_x_posts",
     ),
+    "traffic-analysis": (
+        "mcp_social_dashboard_get_traffic_posts",
+        "mcp_social_dashboard_create_visualization_blocks",
+    ),
 }
 EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
     "tech-news-sync": "1.0.0",
     "competitor-content-sync": "1.0.0",
-    "facebook-traffic-sync": "1.1.1",
-    "x-traffic-sync": "1.1.1",
+    "facebook-traffic-sync": "2.0.0",
+    "x-traffic-sync": "2.0.0",
+    "traffic-analysis": "1.0.0",
 }
 FORBIDDEN = [
     "MCP_JWT_SECRET",
