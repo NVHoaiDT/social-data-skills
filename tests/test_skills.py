@@ -40,7 +40,7 @@ EXPECTED = {
 }
 EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
-    "tech-news-sync": "1.1.0",
+    "tech-news-sync": "1.2.0",
     "competitor-content-sync": "1.0.0",
     "facebook-traffic-sync": "2.1.0",
     "facebook-post-report-sync": "1.0.0",
@@ -197,6 +197,16 @@ def test_tech_news_skill_defines_plan_handoff_contract():
 
     assert "concise one-line content title or idea" in text
     assert "not complete social post copy" in text
-    for brief_label in ("Size:", "Color:", "Topic:", "Description:"):
+    for brief_label in ("Headline:", "Background:", "Describe:"):
         assert brief_label in text
+    for hardcoded_brief in (
+        "Size: 1920x1920",
+        "Color: Designveloper branding",
+        "Topic: <what the visual communicates>",
+        "Description:",
+    ):
+        assert hardcoded_brief not in text
+    assert "Do not force `Size`, `Color`, `Topic`" in text
+    assert "marketing team's existing Plan briefs" in text
+    assert "as many bullets or subsections as useful" in text
     assert "all four Plan suggestion fields to `null`" in text

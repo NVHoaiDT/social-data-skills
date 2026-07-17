@@ -1,7 +1,7 @@
 ---
 name: tech-news-sync
 description: Sync technology news into the social dashboard.
-version: 1.1.0
+version: 1.2.0
 author: Designveloper
 license: MIT
 platforms: [linux, macos]
@@ -28,16 +28,19 @@ Use this skill to refresh configured technology and software-development news so
      - `suggestedTopic`: exactly one of `Career Advice`, `Tech news`, `DSV's member sharing`, `DSV's services`, `DSV's news`, `Blog Post Sharing`, `Promotion`, `Email`, `Knowledge sharing`, `Other`, `Case study`, or `Meme`. Classify the proposed DSV content angle, not the RSS publisher.
      - `suggestedMessage`: a concise one-line content title or idea, not complete social post copy.
      - `suggestedPlatforms`: one or more unique values from `Facebook`, `LinkedIn`, and `X`.
-     - `suggestedDesignBrief`: an actionable brief matching the marketing Plan sheet's wording and detail. Do not invent asset links. Follow this pattern, adapting the size only when the concept requires it:
+     - `suggestedDesignBrief`: a detailed, production-ready visual idea matching the marketing team's existing Plan briefs. Do not invent asset links. Do not force `Size`, `Color`, `Topic`, or a stock composition; include dimensions or color direction only when they materially help the concept. Let the article and content angle determine the medium, layout, imagery, number of slides or scenes, and visual treatment.
+
+       Use these anchors as a flexible brief structure, not a fixed design recipe:
 
        ```text
-       Size: 1920x1920
-       Color: Designveloper branding
-       Topic: <what the visual communicates>
-       Description:
-       - Headline: <short on-image headline>
-       - Background/key visual: <specific composition, imagery, and emphasis>
+       Headline: <main on-image copy, or state that no headline is needed>
+       Background: <concept-specific setting, key visual, mood, or art direction>
+       Describe:
+       - <detailed execution direction in the social team's usual style>
+       - <additional concept-specific details as needed>
        ```
+
+       Write `Describe` like the sheet's real briefs: explain concrete text hierarchy and placement, composition, supporting visuals or icons, data or callouts, slide or video sequence, emphasis, constraints, and references when relevant. Include only what serves the idea, and use as many bullets or subsections as useful. If the concept intentionally has no conventional headline or background, say so rather than inventing one.
 
    - Otherwise set all four Plan suggestion fields to `null`.
 5. Call `mcp_social_dashboard_update_news` with the same `fetchedAt`, original normalized fields, and every Hermes-produced field. Never send a partial Plan suggestion.
