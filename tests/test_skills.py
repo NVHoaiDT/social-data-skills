@@ -40,7 +40,7 @@ EXPECTED = {
 }
 EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
-    "tech-news-sync": "1.0.0",
+    "tech-news-sync": "1.1.0",
     "competitor-content-sync": "1.0.0",
     "facebook-traffic-sync": "2.1.0",
     "facebook-post-report-sync": "1.0.0",
@@ -150,3 +150,53 @@ def test_public_files_have_no_cron_commands_or_tags():
     for name in EXPECTED:
         frontmatter, _ = parse_skill(SKILLS / name / "SKILL.md")
         assert "cron" not in frontmatter["metadata"]["hermes"]["tags"]
+
+
+def test_tech_news_skill_defines_plan_handoff_contract():
+    _, text = parse_skill(SKILLS / "tech-news-sync" / "SKILL.md")
+
+    for field in (
+        "suggestedTopic",
+        "suggestedMessage",
+        "suggestedPlatforms",
+        "suggestedDesignBrief",
+    ):
+        assert field in text
+
+    expected_topics = (
+        "Career Advice",
+        "Tech news",
+        "DSV's member sharing",
+        "DSV's services",
+        "DSV's news",
+        "Blog Post Sharing",
+        "Promotion",
+        "Email",
+        "Knowledge sharing",
+        "Other",
+        "Case study",
+        "Meme",
+    )
+    topic_match = re.search(
+        r"`suggestedTopic`: exactly one of (.*?)\. Classify",
+        text,
+    )
+    assert topic_match
+    assert tuple(re.findall(r"`([^`]+)`", topic_match.group(1))) == expected_topics
+
+    platform_match = re.search(
+        r"`suggestedPlatforms`: one or more unique values from (.*?)\.",
+        text,
+    )
+    assert platform_match
+    assert tuple(re.findall(r"`([^`]+)`", platform_match.group(1))) == (
+        "Facebook",
+        "LinkedIn",
+        "X",
+    )
+
+    assert "concise one-line content title or idea" in text
+    assert "not complete social post copy" in text
+    for brief_label in ("Size:", "Color:", "Topic:", "Description:"):
+        assert brief_label in text
+    assert "all four Plan suggestion fields to `null`" in text
