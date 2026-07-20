@@ -40,7 +40,7 @@ EXPECTED = {
 }
 EXPECTED_VERSIONS = {
     "google-trends-sync": "1.0.0",
-    "tech-news-sync": "1.2.0",
+    "tech-news-sync": "1.3.0",
     "competitor-content-sync": "1.0.0",
     "facebook-traffic-sync": "2.1.0",
     "facebook-post-report-sync": "1.0.0",
@@ -210,3 +210,54 @@ def test_tech_news_skill_defines_plan_handoff_contract():
     assert "marketing team's existing Plan briefs" in text
     assert "as many bullets or subsections as useful" in text
     assert "all four Plan suggestion fields to `null`" in text
+
+
+def test_tech_news_skill_delegates_dynamic_batches_without_refetching():
+    _, text = parse_skill(SKILLS / "tech-news-sync" / "SKILL.md")
+
+    for instruction in (
+        "delegate_task",
+        "actual number of fetched items",
+        "at most 10 items",
+        "itemIndex",
+        "Workers must not call either MCP tool",
+        "exact assigned rows in the worker context",
+    ):
+        assert instruction in text
+
+    assert "Do not divide work using a fixed source list" in text
+    assert "Do not ask a worker to fetch the batch again" in text
+
+
+def test_tech_news_skill_keeps_main_agent_as_validation_authority():
+    _, text = parse_skill(SKILLS / "tech-news-sync" / "SKILL.md")
+
+    for instruction in (
+        "The main agent is the source of truth",
+        "exactly once",
+        "one correction retry",
+        "relatedToDSVScore: `0`",
+        "isContentWorthy: `false`",
+        "aiInsight: `null`",
+        "all four Plan suggestion fields: `null`",
+        "preserve the original row count and order",
+        "one atomic write",
+        "Enrichment failed",
+    ):
+        assert instruction in text
+
+    assert "Never create a generic deterministic fallback" in text
+
+
+def test_tech_news_skill_requires_exact_article_specific_design_briefs():
+    _, text = parse_skill(SKILLS / "tech-news-sync" / "SKILL.md")
+
+    for instruction in (
+        "copy the complete `title` exactly",
+        "Never truncate, shorten, paraphrase, or add an ellipsis",
+        "article-specific mechanisms, entities, risks, or outcomes",
+        "topic-only template",
+        "compare `Background` and `Describe` across the current batch",
+        "revise repeated or interchangeable briefs",
+    ):
+        assert instruction in text
