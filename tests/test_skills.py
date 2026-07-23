@@ -39,7 +39,7 @@ EXPECTED = {
     ),
 }
 EXPECTED_VERSIONS = {
-    "google-trends-sync": "1.0.0",
+    "google-trends-sync": "1.1.0",
     "tech-news-sync": "1.3.0",
     "competitor-content-sync": "1.0.0",
     "facebook-traffic-sync": "2.1.0",
