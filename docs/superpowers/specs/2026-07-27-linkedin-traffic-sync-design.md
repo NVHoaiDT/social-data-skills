@@ -243,8 +243,11 @@ Mirrors `facebook-traffic-sync/SKILL.md`:
 1. Call `mcp_secure_proxy_social_fetch_linkedin_posts` with `{}`.
 2. Require `fetchedAt`, `items`, `warnings`. Stop on tool error.
 3. Empty `items` → preserve existing rows, report no-data.
-4. Assign one of the 11 existing content categories per item (`Other` when
-   `message` is null/empty).
+4. Assign exactly one category per item, same taxonomy as
+   `facebook-traffic-sync`/`x-traffic-sync`: `Career Advice`, `Tech news`,
+   `DSV's member sharing`, `DSV's services`, `DSV's news`, `Blog Post
+   Sharing`, `Promotion`, `Knowledge sharing`, `Case study`, `Meme`, or
+   `Other`. Use `Other` when `message` is null or empty.
 5. Pass `postType`, `impressions`, `reach`, `totalClicks` through
    unmodified.
 6. Call `mcp_social_dashboard_update_dsv_linkedin_posts` with `fetchedAt`,
