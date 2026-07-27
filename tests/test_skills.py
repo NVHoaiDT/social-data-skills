@@ -49,7 +49,7 @@ EXPECTED_VERSIONS = {
     "facebook-traffic-sync": "2.1.0",
     "facebook-post-report-sync": "1.0.0",
     "x-traffic-sync": "2.0.0",
-    "linkedin-traffic-sync": "1.0.0",
+    "linkedin-traffic-sync": "1.1.0",
     "traffic-analysis": "1.0.0",
 }
 

@@ -1,7 +1,7 @@
 ---
 name: linkedin-traffic-sync
 description: Sync LinkedIn traffic into the social dashboard.
-version: 1.0.0
+version: 1.1.0
 author: Designveloper
 license: MIT
 platforms: [linux, macos]
@@ -22,8 +22,8 @@ Use this skill to refresh Designveloper LinkedIn company page posts and engageme
 3. If `items` is empty, preserve existing rows and report the no-data result.
 4. Assign exactly one category to each post: `Career Advice`, `Tech news`, `DSV's member sharing`, `DSV's services`, `DSV's news`, `Blog Post Sharing`, `Promotion`, `Knowledge sharing`, `Case study`, `Meme`, or `Other`.
 5. Use `Other` when `message` is null or empty. Do not invent `postType`. Pass `numReactions`, `numComments`, `numShares`, `impressions`, `reach`, and `totalClicks` through exactly as returned. They are real LinkedIn share-statistics data, but an individual post's values may be `null` when its statistics lookup failed. Never invent replacement values.
-6. Call `mcp_social_dashboard_update_dsv_linkedin_posts` with the same `fetchedAt`, all normalized fields, and `category`.
-7. Report the upsert count and provider warnings.
+6. Call `mcp_social_dashboard_update_dsv_linkedin_posts` in complete-record batches of about 25 items, using the same `fetchedAt` for every batch in this run. The tool always upserts full records; there is no metrics-only, partial-update, or bulk-import path, so do not search for one or attempt a raw/unauthenticated write.
+7. Sum the upsert counts across batches and report the total plus provider warnings.
 
 ## Failure
 
