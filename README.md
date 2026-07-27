@@ -1,6 +1,6 @@
 # Designveloper Social Data Skills
 
-Public Hermes skills for Google Trends, technology news, competitor content, Facebook traffic, X traffic, and traffic performance analysis. Installed copies run from Hermes persistent storage; GitHub is not required during normal execution.
+Public Hermes skills for Google Trends, technology news, competitor content, Facebook traffic, X traffic, LinkedIn traffic, and traffic performance analysis. Installed copies run from Hermes persistent storage; GitHub is not required during normal execution.
 
 ## Install
 
@@ -12,6 +12,7 @@ hermes skills install designveloper/social-data-skills/skills/competitor-content
 hermes skills install designveloper/social-data-skills/skills/facebook-traffic-sync --yes
 hermes skills install designveloper/social-data-skills/skills/facebook-post-report-sync --yes
 hermes skills install designveloper/social-data-skills/skills/x-traffic-sync --yes
+hermes skills install designveloper/social-data-skills/skills/linkedin-traffic-sync --yes
 hermes skills install designveloper/social-data-skills/skills/traffic-analysis --yes
 ```
 
@@ -24,5 +25,6 @@ hermes skills update competitor-content-sync
 hermes skills update facebook-traffic-sync
 hermes skills update facebook-post-report-sync
 hermes skills update x-traffic-sync
+hermes skills update linkedin-traffic-sync
 hermes skills update traffic-analysis
 ```

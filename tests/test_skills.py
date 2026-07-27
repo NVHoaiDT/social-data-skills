@@ -33,6 +33,10 @@ EXPECTED = {
         "mcp_secure_proxy_social_fetch_x_posts",
         "mcp_social_dashboard_update_dsv_x_posts",
     ),
+    "linkedin-traffic-sync": (
+        "mcp_secure_proxy_social_fetch_linkedin_posts",
+        "mcp_social_dashboard_update_dsv_linkedin_posts",
+    ),
     "traffic-analysis": (
         "mcp_social_dashboard_get_traffic_posts",
         "mcp_social_dashboard_create_visualization_blocks",
@@ -45,6 +49,7 @@ EXPECTED_VERSIONS = {
     "facebook-traffic-sync": "2.1.0",
     "facebook-post-report-sync": "1.0.0",
     "x-traffic-sync": "2.0.0",
+    "linkedin-traffic-sync": "1.0.0",
     "traffic-analysis": "1.0.0",
 }
 
