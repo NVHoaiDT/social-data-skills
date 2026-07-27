@@ -23,7 +23,7 @@ Use this skill to refresh configured technology and software-development news so
 4. Give every fetched item a temporary zero-based `itemIndex` matching its position in `items`. The index is only for delegation and validation; do not send it to the dashboard.
 5. Choose the enrichment path from the actual number of fetched items:
    - For 10 or fewer items, the main agent may enrich them directly.
-   - For more than 10 items, spam sub-agents with dynamically generated leaf-worker tasks. Do not divide work using a fixed source list or assume a fixed total such as 80.
+   - For more than 10 items, use `delegate_task` to spam sub-agents with dynamically generated leaf-worker tasks. Do not divide work using a fixed source list or assume a fixed total such as 80.
    - Split the current items in their original order into slices of at most 10 items. The number of worker tasks must therefore follow the actual number of fetched items. Let Hermes enforce its configured worker concurrency rather than dropping or enlarging slices.
    - Put each slice's exact assigned rows in the worker context as compact JSON containing only `itemIndex`, `title`, `summary`, and `source`. Do not ask a worker to fetch the batch again. Workers must not call either MCP tool; only the main agent fetches and writes.
    - Tell every worker to return one compact JSON array with no Markdown. Each object must contain `itemIndex` and every Hermes-produced field listed below, including explicit `null` values.
