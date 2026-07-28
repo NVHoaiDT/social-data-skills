@@ -44,7 +44,7 @@ EXPECTED = {
 }
 EXPECTED_VERSIONS = {
     "google-trends-sync": "1.1.0",
-    "tech-news-sync": "1.3.0",
+    "tech-news-sync": "1.4.0",
     "competitor-content-sync": "1.0.0",
     "facebook-traffic-sync": "2.1.0",
     "facebook-post-report-sync": "1.0.0",
@@ -246,7 +246,8 @@ def test_tech_news_skill_keeps_main_agent_as_validation_authority():
         "aiInsight: `null`",
         "all four Plan suggestion fields: `null`",
         "preserve the original row count and order",
-        "one atomic write",
+        "never safe to resend once it might have landed",
+        "never attempt a raw HTTP call, a different auth header, or any other bypass",
         "Enrichment failed",
     ):
         assert instruction in text

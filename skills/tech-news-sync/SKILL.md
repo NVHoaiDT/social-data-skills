@@ -1,7 +1,7 @@
 ---
 name: tech-news-sync
 description: Sync technology news into the social dashboard.
-version: 1.3.0
+version: 1.4.0
 author: Designveloper
 license: MIT
 platforms: [linux, macos]
@@ -63,8 +63,8 @@ Use this skill to refresh configured technology and software-development news so
    - If an item is still missing any field or remains invalid after one correction retry, discard that item's entire worker enrichment and use these type-safe fallbacks: relatedToDSVScore: `0`, isContentWorthy: `false`, aiInsight: `null`, and all four Plan suggestion fields: `null`. Record `Enrichment failed: <title> (<reason>)` for the final report.
    - Never create a generic deterministic fallback, reusable topic template, invented insight, or guessed Plan value to hide a worker failure.
 8. Recombine verified enrichment with the untouched original rows by `itemIndex`. Remove the temporary index, preserve the original row count and order, and assert that every fetched row produces exactly one update row.
-9. Call `mcp_social_dashboard_update_news` once with the original `fetchedAt`, all original normalized fields, and every verified or fallback Hermes-produced field. Never send a partial Plan suggestion; use one atomic write for the complete batch.
-10. Report the number written, every `Enrichment failed` item, and all source warnings without treating a usable partial batch as a total failure.
+9. Call `mcp_social_dashboard_update_news` once per slice, reusing the same ≤10-item slices from step 5, in order, with the original `fetchedAt` on every call. Never send a partial Plan suggestion within an item. There is no file-backed, bulk-import, or alternate-transport path for this write — always use the registered tool with the requester's normal assertion; never attempt a raw HTTP call, a different auth header, or any other bypass. `update_news` appends rows with no upsert, so a slice is never safe to resend once it might have landed: if a call's outcome is unknown (timeout, dropped response, connection error), stop issuing further writes immediately and treat that slice and everything after it as unconfirmed — do not guess, and do not retry it.
+10. Sum the confirmed `inserted` counts from the tool responses you actually received and report that total, every `Enrichment failed` item, all source warnings, and — if the run stopped before every slice was confirmed — exactly which slices are confirmed written versus unconfirmed, without treating a usable partial batch as a total failure.
 
 ## Failure
 
